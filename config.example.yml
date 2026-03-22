@@ -1,0 +1,38 @@
+# immich-cross-account-proxy configuration
+# Copy to config.yml and fill in your values
+
+# URL of your Immich server (the proxy forwards requests here)
+immich_url: "http://immich_server:3001"
+
+# Port this proxy listens on
+proxy_port: 2284
+
+# Cache ownership lookups to avoid repeated API calls
+# TTL in seconds (0 = disabled)
+cache_ttl: 300
+
+# Define accounts. Each account needs:
+#   name:    friendly label (used in logs)
+#   api_key: Immich API key for this user (generate in Immich user settings)
+#   user_id: Immich user UUID (visible in Immich admin or profile URL)
+accounts:
+  - name: "Alice"
+    api_key: "your_alice_api_key_here"
+    user_id: "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+
+  - name: "Bob"
+    api_key: "your_bob_api_key_here"
+    user_id: "yyyyyyyy-yyyy-yyyy-yyyy-yyyyyyyyyyyy"
+
+# Cross-account permissions.
+# "can_act_as" means this account's API key can perform mutating
+# operations (delete, update metadata, album edits) on assets
+# owned by those other accounts.
+#
+# To give Alice and Bob full mutual access:
+permissions:
+  - account: "Alice"
+    can_act_as: ["Bob"]
+
+  - account: "Bob"
+    can_act_as: ["Alice"]
